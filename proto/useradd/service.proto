@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package useradd;
+
+service UserAdd {
+rpc AddUser(AddDataRequest) returns (AddDataResponse) {}
+}
+
+message AddDataRequest{
+string data = 1;
+}
+
+message AddDataResponse{
+string result = 1;
+}

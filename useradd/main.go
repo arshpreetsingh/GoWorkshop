@@ -4,8 +4,7 @@ import (
 	"net"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/wizelineacademy/GoWorkshop/list/server"
-	"github.com/wizelineacademy/GoWorkshop/proto/list"
+	"github.com/wizelineacademy/GoWorkshop/useradd/server"
 	"google.golang.org/grpc"
 )
 
@@ -19,6 +18,6 @@ func main() {
 	log.Info("starting service on :8080")
 
 	srv := grpc.NewServer()
-	list.RegisterUserAddServer(srv, &server.Server{})
+	users.RegisterUsersServer(srv, &server.Server{})
 	srv.Serve(listener)
 }

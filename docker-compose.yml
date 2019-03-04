@@ -1,20 +1,35 @@
 version: '3'
 services:
-  list:
+  # list:
+  #   build:
+  #     context: .
+  #     dockerfile: list/Dockerfile
+  #   environment:
+  #    - "MONGO_HOST=db"
+  #   image: pltvs/todo-list
+  #   container_name: todo-list
+  #   entrypoint: /go/bin/list
+  #   depends_on:
+  #     - db
+  #   links:
+  #     - db
+  #   ports:
+  #     - "50001:8080"
+  useradd:
     build:
       context: .
-      dockerfile: list/Dockerfile
+      dockerfile: useradd/Dockerfile
     environment:
      - "MONGO_HOST=db"
     image: pltvs/todo-list
-    container_name: todo-list
-    entrypoint: /go/bin/list
+    container_name: todo-useradd
+    entrypoint: /go/bin/useradd
     depends_on:
       - db
     links:
       - db
     ports:
-      - "50001:8080"
+      - "50003:8080"
 
   users:
     build:
@@ -22,30 +37,33 @@ services:
       dockerfile: users/Dockerfile
     environment:
      - "MONGO_HOST=db"
-     - "SRV_LIST_ADDR=list:8080"
-     - "SRV_NOTIFIER_ADDR=notifier:8080"
+     #- "SRV_LIST_ADDR=list:8080"
+     #- "SRV_NOTIFIER_ADDR=notifier:8080"
+     - "SRV_USERADD_ADDR=useradd:8080"
     image: pltvs/todo-users
     container_name: todo-users
     entrypoint: /go/bin/users
     depends_on:
-      - list
-      - notifier
+      - useradd
+      #- list
+      #- notifier
       - db
     links:
-      - list
-      - notifier
+      - useradd
+      #- list
+      #- notifier
       - db
     ports:
       - "50000:8080"
 
-  notifier:
-    build:
-      context: .
-      dockerfile: notifier/Dockerfile
-    container_name: todo-notifier
-    entrypoint: /go/bin/notifier
-    ports:
-      - "50002:8080"
+  # notifier:
+  #   build:
+  #     context: .
+  #     dockerfile: notifier/Dockerfile
+  #   container_name: todo-notifier
+  #   entrypoint: /go/bin/notifier
+  #   ports:
+  #     - "50002:8080"
 
   web:
     build:
@@ -53,14 +71,14 @@ services:
       dockerfile: web/Dockerfile
     environment:
      - "SRV_USERS_ADDR=users:8080"
-     - "SRV_LIST_ADDR=list:8080"
+     #- "SRV_LIST_ADDR=list:8080"
     image: pltvs/todo-web
     container_name: todo-web
     depends_on:
-      - list
+      #- list
       - users
     links:
-      - list
+      #- list
       - users
     ports:
       - "3030:8080"

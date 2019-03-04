@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/wizelineacademy/GoWorkshop/proto/list"
 	"github.com/wizelineacademy/GoWorkshop/proto/notifier"
+	"github.com/wizelineacademy/GoWorkshop/proto/useradd"
 	"github.com/wizelineacademy/GoWorkshop/proto/users"
 	"github.com/wizelineacademy/GoWorkshop/users/models"
 	"golang.org/x/net/context"
@@ -14,6 +15,14 @@ import (
 )
 
 type Server struct{}
+
+func (s *Server) JustFunc(ctx context.Context, in *users.CreateUserRequest) string {
+
+	createUserAdd()
+	string := "this is string function"
+	return string
+
+}
 
 func (s *Server) CreateUser(ctx context.Context, in *users.CreateUserRequest) (*users.CreateUserResponse, error) {
 	userID, err := models.CreateUser(in.Email)
@@ -23,6 +32,7 @@ func (s *Server) CreateUser(ctx context.Context, in *users.CreateUserRequest) (*
 		log.WithField("id", userID).Info("user created")
 
 		createInitialItem(userID)
+		createUserAdd()
 		go notify(in.Email)
 
 		response.Message = "User created successfully"
@@ -67,8 +77,24 @@ func createInitialItem(userID string) {
 
 	if _, err = list.NewListClient(conn).CreateItem(context.Background(), &list.CreateItemRequest{
 		Message: "Welcome to Workshop!",
-		UserId:  userID,
-	}); err != nil {
+		UserId:  userID}); err != nil {
 		log.WithError(err).Error("unable to create initial item")
 	}
+}
+
+// Call useradd service here
+
+func createUserAdd() {
+	conn, err := grpc.Dial(os.Getenv("SRV_USERADD_ADDR"), grpc.WithInsecure())
+
+	if err != nil {
+		log.WithError(err).Error("cannot dial list service")
+		return
+	}
+
+	if _, err = useradd.NewUserAddClient(conn).AddUser(context.Background(), &useradd.AddDataRequest{
+		Value: "This is value one"}); err != nil {
+		log.WithError(err).Error("unable to create initial item")
+	}
+
 }

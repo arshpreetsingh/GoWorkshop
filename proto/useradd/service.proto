@@ -6,8 +6,9 @@ service UserAdd {
 rpc AddUser(AddDataRequest) returns (AddDataResponse) {}
 }
 
+
 message AddDataRequest{
-string data = 1;
+string value = 1;
 }
 
 message AddDataResponse{

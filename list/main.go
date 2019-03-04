@@ -19,6 +19,6 @@ func main() {
 	log.Info("starting service on :8080")
 
 	srv := grpc.NewServer()
-	list.RegisterUserAddServer(srv, &server.Server{})
+	list.RegisterListServer(srv, &server.Server{})
 	srv.Serve(listener)
 }

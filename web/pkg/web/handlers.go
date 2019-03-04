@@ -38,7 +38,6 @@ func ListenAndServe() {
 
 	r := web.New(Context{}).
 		Get("/", ctx.home).
-		Get("/hello", ctx.justFunc).
 		Post("/", ctx.createUser).
 		Get("/user/:id", ctx.user).
 		Post("/user/:id", ctx.user)

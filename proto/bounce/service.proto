@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package bounce;
+
+service Bounce{
+rpc GetData(BounceGetData) returns (BounceGetDataResponse) {}
+rpc PostData(BouncePostData) returns (BouncePostDataResponse) {}
+}
+
+message BounceGetData{
+int32 account_id = 1;
+}
+
+message BounceGetDataResponse{
+
+string reason = 1;
+string bounce_class_name = 2;
+string bounce_class_description = 3;
+int32 ounce_category_id = 4;
+string bounce_category_name = 5;
+int32 classification_id = 6;
+int32 count_inband_bounce = 7;
+int32 count_outofband_bounce = 8;
+int32 count_bounce = 9;
+
+}
+
+message BouncePostData{
+int32 account_id=1;
+int32 sub_account_id=2;
+string to_email=3;
+string from_email=4;
+string from_domain=5;
+int32 injection_ip=6;
+int32 remote_ip=7;
+string ip_pool=8;
+string bounce_type=9;
+string bounce_class_name=10;
+string bounce_class_description=11;
+int32 classification_id=12;
+int32 transmission_id=13;
+int32 message_id=14;
+string bounce_reason=15;
+string status=16;
+}
+
+message BouncePostDataResponse{
+string status = 1;
+int32 account_id = 2;
+}

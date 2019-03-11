@@ -4,8 +4,8 @@ import (
 	"net"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/wizelineacademy/GoWorkshop/list/server"
-	"github.com/wizelineacademy/GoWorkshop/proto/list"
+	"github.com/wizelineacademy/GoWorkshop/bounce/server"
+	"github.com/wizelineacademy/GoWorkshop/proto/bounce"
 	"google.golang.org/grpc"
 )
 
@@ -19,6 +19,6 @@ func main() {
 	log.Info("starting service on :8080")
 
 	srv := grpc.NewServer()
-	list.RegisterListServer(srv, &server.Server{})
+	bounce.RegisterBounceServer(srv, &server.Server{})
 	srv.Serve(listener)
 }

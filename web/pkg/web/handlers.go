@@ -10,31 +10,24 @@ import (
 	"github.com/gorilla/context"
 
 	log "github.com/sirupsen/logrus"
-	pbList "github.com/wizelineacademy/GoWorkshop/proto/list"
-	pbUsers "github.com/wizelineacademy/GoWorkshop/proto/users"
+	pbBounce "github.com/wizelineacademy/GoWorkshop/proto/bounce"
 )
 
 // Context struct
 type Context struct {
-	UsersService pbUsers.UsersClient
-	ListService  pbList.ListClient
+	BounceService pbBounce.BounceClinet
 }
 
 // ListenAndServe func
 func ListenAndServe() {
-	connUsers, errUsers := grpc.Dial(os.Getenv("SRV_USERS_ADDR"), grpc.WithInsecure())
+
+	connBounce, errBounce := grpc.Dial(os.Getenv("SRV_BOUNCE_ADDR"), grpc.WithInsecure())
 	if errUsers != nil {
 		log.WithError(errUsers).Fatal("could not connect to users service")
 	}
 
-	connList, errList := grpc.Dial(os.Getenv("SRV_LIST_ADDR"), grpc.WithInsecure())
-	if errList != nil {
-		log.WithError(errList).Fatal("could not connect to list service")
-	}
-
 	ctx := new(Context)
-	ctx.UsersService = pbUsers.NewUsersClient(connUsers)
-	ctx.ListService = pbList.NewListClient(connList)
+	ctx.BounceService = pbUsers.NewUsersClient(connBounce)
 
 	r := web.New(Context{}).
 		Get("/", ctx.home).

@@ -56,7 +56,7 @@ type Bounces struct {
 // }
 
 func (db *DB) BounceGetData() ([]*Bounces, error) {
-	rows, err := db.Query("SELECT * FROM table_name")
+	rows, err := db.Query("SELECT * FROM bounces")
 
 	if err != nil {
 		fmt.Println("not able to get data", err)

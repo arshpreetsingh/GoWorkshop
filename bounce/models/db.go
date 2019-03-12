@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"os"
 
 	_ "github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
@@ -16,7 +17,7 @@ type DB struct {
 }
 
 func NewDB(dataSourceName string) (*DB, error) {
-	db, err := sql.Open("postgres", dataSourceName)
+	db, err := sql.Open(os.Getenv("TIMESCALE_HOST"), dataSourceName)
 	if err != nil {
 		log.WithError(err).Fatal("could not connect to Database")
 		return nil, err

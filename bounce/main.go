@@ -15,7 +15,6 @@ func main() {
 		log.WithError(err).Error("could not start service")
 		return
 	}
-
 	log.Info("starting service on :8080")
 
 	srv := grpc.NewServer()

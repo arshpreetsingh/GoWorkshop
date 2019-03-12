@@ -16,6 +16,6 @@ func (s *Server) GetData(ctx context.Context, in *bounce.BounceGetData) (*bounce
 	bounces, err := s.db.BounceGetData()
 	//return bounces, err
 	response := new(bounce.BounceGetDataResponse)
-	fmt.Println("this is userID", bounces)
+	fmt.Println("this is Bonces", bounces)
 	return response, err
 }

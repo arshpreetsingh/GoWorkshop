@@ -5,73 +5,15 @@ services:
       context: .
       dockerfile: bounce/Dockerfile
     environment:
-     - "MONGO_HOST=db"
-    container_name: todo-bounce
+     - "TIMESCALE_HOST=timescale"
+    container_name: bounce-service
     entrypoint: /go/bin/bounce
     depends_on:
-      - db
+      - timescale
     links:
-      - db
+      - timescale
     ports:
-      - "50000:8080"
-  #
-  # users:
-  #   build:
-  #     context: .
-  #     dockerfile: users/Dockerfile
-  #   environment:
-  #    - "MONGO_HOST=db"
-  #    #- "SRV_LIST_ADDR=list:8080"
-  #    #- "SRV_NOTIFIER_ADDR=notifier:8080"
-  #    - "SRV_USERADD_ADDR=useradd:8080"
-  #   image: pltvs/todo-users
-  #   container_name: todo-users
-  #   entrypoint: /go/bin/users
-  #   depends_on:
-  #     - useradd
-  #     #- list
-  #     #- notifier
-  #     - db
-  #   links:
-  #     - useradd
-  #     #- list
-  #     #- notifier
-  #     - db
-  #   ports:
-  #     - "50000:8080"
-
-  # notifier:
-  #   build:
-  #     context: .
-  #     dockerfile: notifier/Dockerfile
-  #   container_name: todo-notifier
-  #   entrypoint: /go/bin/notifier
-  #   ports:
-  #     - "50002:8080"
-
-  # web:
-  #   build:
-  #     context: .
-  #     dockerfile: web/Dockerfile
-  #   environment:
-  #    - "SRV_USERS_ADDR=users:8080"
-  #    #- "SRV_LIST_ADDR=list:8080"
-  #   image: pltvs/todo-web
-  #   container_name: todo-web
-  #   depends_on:
-  #     #- list
-  #     - users
-  #   links:
-  #     #- list
-  #     - users
-  #   ports:
-  #     - "3030:8080"
-
-  db:
-    image: mongo:3.3
-    container_name: todo-db
-    logging:
-      driver: none
+      - "8080:8080"
   timescale:
     image: timescale/timescaledb
     environment:

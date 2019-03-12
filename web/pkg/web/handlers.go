@@ -31,7 +31,7 @@ func ListenAndServe() {
 
 	r := web.New(Context{}).
 		Get("/", ctx.home).
-		Post("/getbounce", ctx.getbounce)
+		Get("/getbounce", ctx.getbounce)
 
 	serveMux := http.NewServeMux()
 	serveMux.Handle("/", r)

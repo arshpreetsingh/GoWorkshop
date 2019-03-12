@@ -1,4 +1,4 @@
-FROM golang:1.9-alpine
+FROM golang:1.12.0-alpine3.9
 
 ENV SRV_NAME bounce
 

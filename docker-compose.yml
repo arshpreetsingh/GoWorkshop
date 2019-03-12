@@ -13,7 +13,21 @@ services:
     links:
       - timescale
     ports:
-      - "8080:8080"
+      - "50000:8080"
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    environment:
+     - "SRV_BOUNCE_ADDR=bounce:8080"
+    image: pltvs/todo-web
+    container_name: bounce-web
+    depends_on:
+      - bounce
+    links:
+      - bounce
+    ports:
+      - "3030:8080"
   timescale:
     image: timescale/timescaledb
     environment:

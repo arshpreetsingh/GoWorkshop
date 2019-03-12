@@ -15,25 +15,23 @@ import (
 
 // Context struct
 type Context struct {
-	BounceService pbBounce.BounceClinet
+	BounceService pbBounce.BounceClient
 }
 
 // ListenAndServe func
 func ListenAndServe() {
 
 	connBounce, errBounce := grpc.Dial(os.Getenv("SRV_BOUNCE_ADDR"), grpc.WithInsecure())
-	if errUsers != nil {
-		log.WithError(errUsers).Fatal("could not connect to users service")
+	if errBounce != nil {
+		log.WithError(errBounce).Fatal("could not connect to bounce service")
 	}
 
 	ctx := new(Context)
-	ctx.BounceService = pbUsers.NewUsersClient(connBounce)
+	ctx.BounceService = pbBounce.NewBounceClient(connBounce)
 
 	r := web.New(Context{}).
 		Get("/", ctx.home).
-		Post("/", ctx.createUser).
-		Get("/user/:id", ctx.user).
-		Post("/user/:id", ctx.user)
+		Post("/getbounce", ctx.getbounce)
 
 	serveMux := http.NewServeMux()
 	serveMux.Handle("/", r)

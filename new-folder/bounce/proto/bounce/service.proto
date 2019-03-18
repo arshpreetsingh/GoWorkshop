@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bounce;
+
+service Bounce{
+rpc GetData(BounceGetData) returns (BounceGetDataResponse) {}
+}
+
+message BounceGetData{
+int32 account_id = 1;
+}
+
+message BounceGetDataResponse{
+int32    AccountID=1;
+string BouncesReason=2;
+string BounceClassName=3;
+int32 ClassificationID=4;
+string BounceType=5;
+string BounceClassDesc=6;
+int32 Count=7;
+}

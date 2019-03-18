@@ -1,0 +1,25 @@
+version: '3'
+services:
+  bounce:
+    build:
+      context: .
+      dockerfile: bounce/Dockerfile
+    environment:
+     - "TIMESCALE_HOST=timescale"
+    container_name: bounce-service
+    entrypoint: /go/bin/bounce
+    depends_on:
+      - timescale
+    links:
+      - timescale
+    ports:
+      - "80:8080"
+  timescale:
+    image: timescale/timescaledb
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: password
+      TIMESCALEDB_TELEMETRY: 'off'
+
+#docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password POSTGRES_DB=dev POSTGRES_USER=test TIMESCALEDB_TELEMETRY='off' timescale/timescaledb:latest-pg11
